@@ -35,7 +35,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG') == 'on'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1'] if DEBUG else ['.alinaverena.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1'] if DEBUG else [env('SERVER_ADDRESS'), 'localhost', '127.0.0.1', '.alinaverena.com']
 
 # Application definition
 
