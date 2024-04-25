@@ -94,11 +94,11 @@ WSGI_APPLICATION = 'alinaverenabackend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'alinaverenadb',
-        'USER': 'alina',
-        'PASSWORD': 'alinaverena',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
+        'NAME': env('DATABASE_NAME') if not DEBUG else 'alinaverenadb',
+        'USER': env('DATABASE_USER') if not DEBUG else 'alina',
+        'PASSWORD': env('DATABASE_PASSWORD') if not DEBUG else 'alinaverena',
+        'HOST': env('DATABASE_HOST') if not DEBUG else '127.0.0.1',
+        'PORT': env('DATABASE_PORT') if not DEBUG else '5432'
     }
 }
 
