@@ -28,10 +28,10 @@ def save_product_images_features(sender, instance: ProductImage, **kwargs):
               '-colors', colors, None)
 
 
-@receiver([post_save], sender=Product)
-def save_product_images_features(sender, instance, **kwargs):
-    if cache.get('product-' + instance.id.__str__() + 'images_by_features') is None:
-        pass
+# @receiver([post_save], sender=Product)
+# def save_product_images_features(sender, instance, **kwargs):
+#     if cache.get('product-' + instance.id.__str__() + 'images_by_features') is None:
+#         pass
 
 
 @receiver([post_save, post_delete], sender=Product)
