@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 # TODO: Tutorial deployment of django https://realpython.com/django-nginx-gunicorn/#turning-on-https
 # TODO: https://github.com/django-parler/django-parler-rest
 # TODO: https://www.youtube.com/watch?v=f0hdXr2MOEA&ab_channel=DanielRoyGreenfeld
+# TODO: https://www.iditect.com/faq/python/nginx-is-throwing-an-403-forbidden-on-static-files.html
 
 from pathlib import Path
 import environ
