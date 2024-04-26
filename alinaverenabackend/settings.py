@@ -16,6 +16,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 
 env = environ.Env()
 
@@ -168,8 +169,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True if not DEBUG else False
 CORS_ALLOW_CREDENTIALS = True if not DEBUG else False
+SECURE_CROSS_ORIGIN_OPENER_POLICY = True
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+# CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
 
 CURRENCIES_FILE_PATH = 'alinaverenaapi'
 COUNTRIES_FILE_PATH = 'alinaverenaapi'
@@ -177,7 +179,7 @@ LANGUAGES_FILE_PATH = 'alinaverenaapi'
 
 AUTH_USER_MODEL = 'alinaverenaapi.Client'
 
-SITE_ID = 2
+SITE_ID = 1
 
 PARLER_LANGUAGES = {
     SITE_ID: (
@@ -199,4 +201,25 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     )
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
+    },
 }

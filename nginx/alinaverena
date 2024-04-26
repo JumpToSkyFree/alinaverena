@@ -1,13 +1,20 @@
-server {
-  server_name               .alinaverena.codes;
-  listen                    80;
-  return                    307 https://$host$request_uri;
-}
+# Disable emitting nginx version in the "Server" response header field
+server_tokens             off;
+
+# Use site-specific access and error logs
+access_log                /var/log/nginx/alinaverena.access.log;
+error_log                 /var/log/nginx/alinaverena.error.log;
 
 server {
+  server_name .alinaverena.com;
+  listen 80;
+
   location / {
     proxy_pass              http://localhost:8000;
     proxy_set_header        Host $host;
+    proxy_set_header      X-Forwarded-Proto $scheme;
+    proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_redirect        off;
   }
 
   location /static {
@@ -15,14 +22,8 @@ server {
     alias /var/www/alinaverena.com/static/;
   }
 
-  location /static {
+  location /media {
     autoindex on;
     alias /var/www/alinaverena.com/media/;
   }
-
-  listen 443 ssl;
-  ssl_certificate /etc/letsencrypt/live/www.alinaverena.com/fullchain.pem;
-  ssl_certificate_key /etc/letsencrypt/live/www.alinaverena.com/privkey.pem;
-  include /etc/letsencrypt/options-ssl-nginx.conf;
-  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 }
