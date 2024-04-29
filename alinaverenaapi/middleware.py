@@ -34,8 +34,8 @@ class UserIPAddressRegistrationMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if not check_client_exists(request):
-            ip = get_client_ip(request)
-            add_client_ip(ip)
+        status, ipaddress, client = check_client_exists(request)
+        if not status:
+            add_client_ip(ipaddress)
 
         return self.get_response(request)

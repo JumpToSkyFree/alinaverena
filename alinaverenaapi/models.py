@@ -225,3 +225,6 @@ class Purchase(models.Model):
     currency = CurrencyField(default='USD')
 
     purchaseInfo = models.JSONField(_("Purchase info"))
+
+    def __str__(self):
+        return f"{self.email}, {self.phoneNumber}"

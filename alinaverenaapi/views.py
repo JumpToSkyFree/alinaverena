@@ -519,10 +519,9 @@ class PurchaseOrder(APIView):
             'request': request
         })
 
-
         if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "order successful."})
+            purchase_order = serializer.save()
+            return Response({"message": "order successful.", "id": purchase_order.id})
 
 
         errors = dict()
