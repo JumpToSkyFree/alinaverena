@@ -1,8 +1,9 @@
+import asyncio
 from django.http import HttpResponse
 from django.conf import settings
 from .models import AnonymousClient, Client
-from alinaverenaapi import send_message, loop
-import telebot
+from alinaverenaapi import send_message
+from alinaverenaapi.models import Product
 
 
 def get_client_ip(request) -> str:
@@ -50,7 +51,10 @@ class ClientWebsiteAccessMiddleware:
     def __call__(self, request):
         status, ipaddress, client = check_client_exists(request)
 
-        if not settings.DEBUG:
-            loop.run_until_complete(send_message(f"A new client with ipaddress {ipaddress} have visited the website"))
+        products = Product.objects.all()
+
+        for product in products:
+            if product.id.__str__() in request.path:
+                send_message(f"A new client with ipaddress {ipaddress} have visited the website.")
 
         return self.get_response(request)
