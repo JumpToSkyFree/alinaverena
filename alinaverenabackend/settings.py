@@ -190,7 +190,8 @@ SITE_ID = 1
 PARLER_LANGUAGES = {
     SITE_ID: (
         {'code': 'en', },
-        {'code': 'ru', }
+        {'code': 'ru', },
+        {'code': 'fr', }
     ),
     'default': {
         # defaults to PARLER_DEFAULT_LANGUAGE_CODE

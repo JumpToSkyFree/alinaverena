@@ -50,6 +50,7 @@ class ClientWebsiteAccessMiddleware:
     def __call__(self, request):
         status, ipaddress, client = check_client_exists(request)
 
-        loop.run_until_complete(send_message(f"A new client with ipaddress {ipaddress} have visited the website"))
+        if not settings.DEBUG:
+            loop.run_until_complete(send_message(f"A new client with ipaddress {ipaddress} have visited the website"))
 
         return self.get_response(request)
