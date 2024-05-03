@@ -1,5 +1,8 @@
 from django.http import HttpResponse
+from django.conf import settings
 from .models import AnonymousClient, Client
+from alinaverenaapi import send_message, loop
+import telebot
 
 
 def get_client_ip(request) -> str:
@@ -21,7 +24,7 @@ def check_client_exists(request):
     anon_client = AnonymousClient.objects.filter(user_ipaddress=ipaddress)
     client = Client.objects.filter(user_ipaddress=ipaddress)
 
-    return (client is not None and anon_client is not None), ipaddress, client
+    return (len(client) > 0 and len(anon_client) > 0), ipaddress, client
 
 
 def add_client_ip(ipaddress):
@@ -37,5 +40,16 @@ class UserIPAddressRegistrationMiddleware:
         status, ipaddress, client = check_client_exists(request)
         if not status:
             add_client_ip(ipaddress)
+
+        return self.get_response(request)
+
+class ClientWebsiteAccessMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        status, ipaddress, client = check_client_exists(request)
+
+        loop.run_until_complete(send_message(f"A new client with ipaddress {ipaddress} have visited the website"))
 
         return self.get_response(request)

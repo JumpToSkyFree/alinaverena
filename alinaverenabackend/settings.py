@@ -57,6 +57,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'alinaverenaapi.middleware.UserIPAddressRegistrationMiddleware',
+    'alinaverenaapi.middleware.ClientWebsiteAccessMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -149,6 +150,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+
+TELEGRAM_ACTIVITY_BOT_KEY = '6687658372:AAGIouVKweafjYXTT6gcrhNqDoNz-UqrtTw'
+TELEGRAM_CHAT_ID = -1002082051233
 
 
 STATIC_URL = 'static/'

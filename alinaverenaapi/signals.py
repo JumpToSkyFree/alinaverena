@@ -3,8 +3,9 @@ import pickle
 from django.db.models.signals import post_save, post_delete, pre_save, pre_delete
 from django.dispatch import receiver
 from django.core.cache import cache
-from .models import Product, ProductImage, Client
+from .models import Product, ProductImage, Client, Purchase
 from rest_framework.authtoken.models import Token
+from alinaverenaapi import loop, send_message
 from .views import get_all_features_of_product, get_all_colors_of_product, get_all_images_by_features_values
 
 
@@ -67,3 +68,19 @@ def notify_user_access(sender, instance: Client, created=False, **kwargs):
 def create_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+
+
+@receiver([post_save], sender=Purchase)
+def notify_purcahse_made(sender, instance: Purchase | None=None, created=False, **kwargs):
+    if created and instance is not None:
+        if instance.lastName != "":
+            loop.run_until_complete(send_message(f"A new purchase is made by {instance.firstName} {instance.lastName}, bought {instance.productId}, i love you my cat."))
+            return
+
+        loop.run_until_complete(send_message(f"A new purchase is made by {instance.firstName} and email {instance.phoneNumber}, bought {instance.productId}, i love you my cat."))
+
+
+@receiver([pre_delete], sender=Purchase)
+def notify_purcahse_deleted(sender, instance: Purchase | None=None, **kwargs):
+    if instance is not None:
+        loop.run_until_complete(send_message(f"Purchase of {instance.firstName} {instance.lastName} is done."))
